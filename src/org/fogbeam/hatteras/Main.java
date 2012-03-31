@@ -1,8 +1,11 @@
 package org.fogbeam.hatteras;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class Main implements Runnable
 {
-	// 
+	private ApplicationContext appContext;
 	
 	public static void main( String[] args )
 	{
@@ -10,7 +13,7 @@ public class Main implements Runnable
 		
 		Main main = new Main();
 		Thread mainThread = new Thread(main);
-		
+		main.init();
 		mainThread.start();
 		
 		System.out.println( "Hatteras running..." );
@@ -19,7 +22,7 @@ public class Main implements Runnable
 	
 	public void init() 
 	{
-		
+		this.appContext = new ClassPathXmlApplicationContext( "applicationContext.xml" );
 	}
 	
 	public void run() 
