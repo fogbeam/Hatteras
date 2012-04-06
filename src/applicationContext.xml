@@ -10,5 +10,37 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd	 
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 		
+	<beans:bean id="subscriptionService" class="org.fogbeam.hatteras.subscription.SubscriptionService" >
+		<beans:property name="restTemplate" ref="restTemplate" />
+	
+	</beans:bean>
+	
+	<beans:bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <beans:property name="messageConverters">
+            <beans:list>
+            	
+            	<beans:bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+                	<beans:property name="marshaller" ref="jaxbMarshaller"/>
+                	<beans:property name="unmarshaller" ref="jaxbMarshaller"/>
+            	</beans:bean>
+                
+                <beans:bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
+ 	           	<beans:bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+    	        <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+ 
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+ 
+	<beans:bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+    	<beans:property name="classesToBeBound">
+        	<beans:list>
+            	<beans:value>org.fogbeam.quoddy.EventSubscription</beans:value>
+            	<beans:value>org.fogbeam.quoddy.User</beans:value>
+            	<beans:value>org.fogbeam.quoddy.jaxrs.collection.EventSubscriptionCollection</beans:value>
+        	</beans:list>
+    	</beans:property>
+	</beans:bean>
+
 	
 </beans:beans>

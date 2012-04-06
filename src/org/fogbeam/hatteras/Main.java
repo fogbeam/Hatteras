@@ -1,5 +1,10 @@
 package org.fogbeam.hatteras;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.fogbeam.hatteras.subscription.SubscriptionService;
+import org.fogbeam.quoddy.EventSubscription;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -31,7 +36,20 @@ public class Main implements Runnable
 		{
 			try
 			{
-				Thread.sleep( 30000 );
+				Thread.sleep( 15000 );
+				
+				// get the list of Subscriptions from the Quoddy server
+				SubscriptionService subService = appContext.getBean( "subscriptionService", SubscriptionService.class );
+				
+				List<EventSubscription> subscriptions = subService.getExternalSubscriptions();
+				
+				for( EventSubscription sub : subscriptions )
+				{
+					System.out.println( sub );
+				}
+				
+				System.out.println( "----------------------------------" );
+				
 			}
 			catch( InterruptedException e )
 			{
