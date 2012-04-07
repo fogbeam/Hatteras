@@ -109,5 +109,15 @@
 	<classpathentry kind="lib" path="lib/camel-xmpp-2.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/camel-xstream-2.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-management-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/mxquery.jar"/>
+	<classpathentry kind="lib" path="lib/guava-11.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/com.springsource.org.quartz-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-net-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbcp-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

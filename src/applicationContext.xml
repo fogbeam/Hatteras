@@ -5,10 +5,39 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p" 
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:camel="http://camel.apache.org/schema/spring"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd	 
-	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+	http://camel.apache.org/schema/spring
+    http://camel.apache.org/schema/spring/camel-spring.xsd">
+	
+	<beans:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<beans:property name="jobDetails">
+	   		<beans:list>
+	      		<beans:ref bean="jobDetail" />
+	   		</beans:list>
+		</beans:property>
+		<beans:property name="triggers">
+	    	<beans:list>
+				<beans:ref bean="simpleTrigger" />
+	    	</beans:list>
+		</beans:property>
+   	</beans:bean>
+		
+	<beans:bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<beans:property name="targetObject" ref="camelSubscriptionProvider" />
+  		<beans:property name="targetMethod" value="updateSubscriptionList" />
+	</beans:bean>	
+		
+	<!-- Simple Trigger -->
+	<beans:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<beans:property name="jobDetail" ref="jobDetail" />
+		<beans:property name="repeatInterval" value="15000" />
+		<beans:property name="startDelay" value="8000" />
+	</beans:bean>	
+		
 		
 	<beans:bean id="subscriptionService" class="org.fogbeam.hatteras.subscription.SubscriptionService" >
 		<beans:property name="restTemplate" ref="restTemplate" />
@@ -41,6 +70,28 @@
         	</beans:list>
     	</beans:property>
 	</beans:bean>
+
+
+	<camel:camelContext id="camelContext">
+   		<camel:routeBuilder ref="camelRouteBuilder" />
+	</camel:camelContext>
+	
+	<beans:bean id="camelRouteBuilder" class="org.fogbeam.hatteras.camel.CamelRouteBuilder" >
+		<beans:property name="downloadLogger" ref="downloadLogger" />
+		<beans:property name="subscriptionPredicate" ref="camelSubscriptionPredicate" />
+	</beans:bean>
+		
+	<beans:bean id="downloadLogger" class="org.fogbeam.hatteras.camel.CamelDownloadLogger" scope="prototype" />
+
+	<beans:bean id="camelSubscriptionPredicate" class="org.fogbeam.hatteras.camel.CamelDynamicPredicate" >
+		<beans:property name="subscriptionProvider" ref="camelSubscriptionProvider" />
+	</beans:bean>
+  
+	<beans:bean id="recipientListBean" class="org.fogbeam.hatteras.camel.CamelRecipientList" />
+  
+  	<beans:bean id="camelSubscriptionProvider" class="org.fogbeam.hatteras.camel.CamelSubscriptionProvider">
+  		<beans:property name="subscriptionService" ref="subscriptionService" />
+  	</beans:bean>
 
 	
 </beans:beans>
