@@ -79,7 +79,7 @@ public class CamelDynamicPredicate implements Predicate
 					// it matches
 					System.out.println( "MATCH FOUND" );
 					allSubscribers.addAll(sub.getSubscribers());
-				
+					exchange.setProperty( "matchedExpression", sub.getXQueryExpression() );
 				}
 				else
 				{

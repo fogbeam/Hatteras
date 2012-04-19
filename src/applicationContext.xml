@@ -31,13 +31,11 @@
   		<beans:property name="targetMethod" value="updateSubscriptionList" />
 	</beans:bean>	
 		
-	<!-- Simple Trigger -->
 	<beans:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<beans:property name="jobDetail" ref="jobDetail" />
 		<beans:property name="repeatInterval" value="15000" />
-		<beans:property name="startDelay" value="8000" />
+		<beans:property name="startDelay" value="6000" />
 	</beans:bean>	
-		
 		
 	<beans:bean id="subscriptionService" class="org.fogbeam.hatteras.subscription.SubscriptionService" >
 		<beans:property name="restTemplate" ref="restTemplate" />
@@ -78,6 +76,7 @@
 	
 	<beans:bean id="camelRouteBuilder" class="org.fogbeam.hatteras.camel.CamelRouteBuilder" >
 		<beans:property name="downloadLogger" ref="downloadLogger" />
+		<beans:property name="existDBProcessor" ref="existDBProcessor" />
 		<beans:property name="subscriptionPredicate" ref="camelSubscriptionPredicate" />
 	</beans:bean>
 		
@@ -93,5 +92,21 @@
   		<beans:property name="subscriptionService" ref="subscriptionService" />
   	</beans:bean>
 
+	<beans:bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+  		<beans:property name="connectionFactory" ref="jmsConnectionFactory"/>
+	</beans:bean>
+	
+	<beans:bean id="jmsConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<beans:property name="jndiEnvironment">
+			<beans:props>
+				<beans:prop key="java.naming.factory.initial">org.jnp.interfaces.NamingContextFactory</beans:prop>
+				<beans:prop key="java.naming.provider.url">localhost:1099</beans:prop>
+			</beans:props>
+		</beans:property>	
+		<beans:property name="jndiName" value="ConnectionFactory" />
+	</beans:bean>	
+
+	<beans:bean id="existDBProcessor" class="org.fogbeam.hatteras.persistence.ExistDBProcessor" />
+	
 	
 </beans:beans>

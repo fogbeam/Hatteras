@@ -24,6 +24,8 @@ public class Main implements Runnable
 		
 		try 
 		{
+			Thread.sleep( 15000 );
+			
 			main.startCamel();
 		}
 		catch( Exception e )
@@ -44,7 +46,7 @@ public class Main implements Runnable
 		
 		CamelContext context = (CamelContext)appContext.getBean( "camelContext" );
 		
-		context.stop();
+		context.start();
 	}
 	
 	public void run() 
