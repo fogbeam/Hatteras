@@ -16,6 +16,7 @@ import javax.xml.xquery.XQStaticContext;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Predicate;
+import org.fogbeam.hatteras.subscription.Subscriber;
 
 import ch.ethz.mxquery.xqj.MXQueryXQDataSource;
 
@@ -50,7 +51,7 @@ public class CamelDynamicPredicate implements Predicate
 			String dec = "declare variable $ext external; ";
 			boolean first = true;
 			
-			List<String> allSubscribers = new ArrayList<String>();
+			List<Subscriber> allSubscribers = new ArrayList<Subscriber>();
 			
 			for( CamelSubscription sub : subs )
 			{

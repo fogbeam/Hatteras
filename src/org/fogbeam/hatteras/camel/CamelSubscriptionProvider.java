@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.fogbeam.hatteras.subscription.Subscriber;
 import org.fogbeam.hatteras.subscription.SubscriptionService;
 import org.fogbeam.quoddy.EventSubscription;
 
@@ -31,10 +32,14 @@ public class CamelSubscriptionProvider
 		List<CamelSubscription> c = new ArrayList<CamelSubscription>();
 		
 				
-		Multimap<String, String> mapper = HashMultimap.create();
+		Multimap<String, Subscriber> mapper = HashMultimap.create();
 		for( EventSubscription sub : extSubscriptions )
 		{
-			mapper.put( sub.getxQueryExpression(), sub.getOwner().getUserId() );
+			Subscriber subscriber = new Subscriber();
+			subscriber.setSubscriberUserId( sub.getOwner().getUserId() );
+			subscriber.setSubscriberUuid( sub.getOwner().getUuid() );
+			subscriber.setSubscriptionUuid( sub.getUuid() );
+			mapper.put( sub.getxQueryExpression(), subscriber );
 		}
 		
 		// build up the new list
@@ -59,10 +64,12 @@ public class CamelSubscriptionProvider
 		for( CamelSubscription cs : subscriptions )
 		{
 			System.out.println( "\n" + cs.getXQueryExpression() + ":" );
-			List<String> subOwners = cs.getSubscribers();
-			for(String subOwner : subOwners )
+			List<Subscriber> subOwners = cs.getSubscribers();
+			for(Subscriber subscriber : subOwners )
 			{
-				System.out.println( subOwner );
+				System.out.println( subscriber.getSubscriberUserId() 
+									+ " : " 
+									+ subscriber.getSubscriberUuid() );
 			}
 			System.out.println( "-------------" );
 		}
@@ -94,26 +101,33 @@ public class CamelSubscriptionProvider
 		// load some dummy data into the subscriptions list...
 		// /oagis:RFQ[@refType='abc']
 		
+		Subscriber prhodes = new Subscriber( "prhodes", "ABC123", "DEF921" );
+		Subscriber mtwain = new Subscriber( "mtwain", "ABC124", "DEF821" );
+		Subscriber dawnlove = new Subscriber( "dawnlove", "ABC125", "DEF721" );
+		Subscriber tinman = new Subscriber( "tinman", "ABC126", "DEF621" );
+		Subscriber pinman = new Subscriber( "pinman", "ABC127", "DEF521" );
+		Subscriber mstanley = new Subscriber( "mstanley", "ABC128", "DEF421" );
+		Subscriber dlemos = new Subscriber( "dlemos", "ABC129", "DEF321" );
+		
 		CamelSubscription sub1 = new CamelSubscription();
 		sub1.setXQueryExpression( "/oagis:RFQ[@refType='abc']" );
-		sub1.addSubscriber( "prhodes" );
-		sub1.addSubscriber( "mtwain" );
+		sub1.addSubscriber( prhodes );
+		sub1.addSubscriber( mtwain );
 		dummyData.add(sub1);
 		
 		CamelSubscription sub2 = new CamelSubscription();
 		sub2.setXQueryExpression( "/oagis:RFQ[@refType='def']" );
-		sub2.addSubscriber( "dawnlove" );
-		sub2.addSubscriber( "tinamn" );
-		sub2.addSubscriber( "pinamn" );
+		sub2.addSubscriber( dawnlove );
+		sub2.addSubscriber( tinman );
+		sub2.addSubscriber( pinman );
 		dummyData.add(sub2);
 		
 		CamelSubscription sub3 = new CamelSubscription();
 		sub3.setXQueryExpression( "/oagis:RFQ[@refType='ghi']" );
-		sub3.addSubscriber( "mstanley" );
-		sub3.addSubscriber( "dlemos" );
+		sub3.addSubscriber( mstanley );
+		sub3.addSubscriber( dlemos );
 		dummyData.add(sub3);		
 		
 		return dummyData;
 	}
-	
 }

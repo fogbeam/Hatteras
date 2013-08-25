@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.fogbeam.hatteras.camel.CamelSubscription;
+import org.fogbeam.hatteras.subscription.Subscriber;
 import org.fogbeam.quoddy.EventSubscription;
 import org.fogbeam.quoddy.User;
 
@@ -23,16 +24,19 @@ public class GuavaTest
 		
 		User u1 = new User();
 		u1.setUserId( "testuser1" );
+		u1.setUuid( "ABC123" );
 		
 		User u2 = new User();
 		u2.setUserId( "testuser2" );
+		u2.setUuid( "ABC124" );
 		
 		User u3 = new User();
 		u3.setUserId( "testuser3" );
+		u3.setUuid( "ABC125" );
 		
 		User u4 = new User();
 		u4.setUserId( "testuser4" );
-		
+		u4.setUuid( "ABC126" );
 		
 		EventSubscription e1 = new EventSubscription();
 		e1.setxQueryExpression( "xQuery1" );
@@ -99,10 +103,14 @@ public class GuavaTest
 		List<CamelSubscription> c = new ArrayList<CamelSubscription>();
 		
 				
-		Multimap<String, String> mapper = HashMultimap.create();
+		Multimap<String, Subscriber> mapper = HashMultimap.create();
 		for( EventSubscription sub : extSubscriptions )
 		{
-			mapper.put( sub.getxQueryExpression(), sub.getOwner().getUserId() );
+			Subscriber subscriber = new Subscriber(sub.getOwner().getUserId(),
+												   sub.getOwner().getUuid(),
+												   sub.getUuid() );
+			
+			mapper.put( sub.getxQueryExpression(), subscriber );
 		}
 		
 		// build up the new list
@@ -118,11 +126,12 @@ public class GuavaTest
 		for( CamelSubscription aSub : c )
 		{
 			System.out.println( aSub.getXQueryExpression() + ":" );
-			List<String> subscribers = aSub.getSubscribers();
-			for( String subOwner : subscribers ) 
+			List<Subscriber> subscribers = aSub.getSubscribers();
+			for( Subscriber subscriber : subscribers ) 
 			{
-				System.out.println( subOwner );
+				System.out.println( subscriber.getSubscriberUserId() + " " + subscriber.getSubscriberUuid() );
 			}
+
 			System.out.println( "-----------\n" );
 		}
 		

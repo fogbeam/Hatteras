@@ -19,7 +19,6 @@ public class CamelRouteBuilder extends RouteBuilder
 			.choice()
 			.when( this.subscriptionPredicate )
 			.bean( CamelRecipientList.class );
-		// .to(  "jms:queue:foobar2" );
 	}	
 
 	public void setDownloadLogger( Processor downloadLogger )

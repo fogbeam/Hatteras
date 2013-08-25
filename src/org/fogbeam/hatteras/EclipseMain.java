@@ -6,9 +6,9 @@ import org.apache.camel.CamelContext;
 import org.fogbeam.hatteras.subscription.SubscriptionService;
 import org.fogbeam.quoddy.EventSubscription;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Main implements Runnable
+public class EclipseMain implements Runnable
 {
 	private ApplicationContext appContext;
 	
@@ -17,7 +17,7 @@ public class Main implements Runnable
 	{
 		System.out.println( "Starting up..." );
 		
-		Main main = new Main();
+		EclipseMain main = new EclipseMain();
 		// Thread mainThread = new Thread(main);
 		main.init();
 		// mainThread.start();
@@ -39,7 +39,7 @@ public class Main implements Runnable
 	
 	public void init() 
 	{
-		this.appContext = new FileSystemXmlApplicationContext( "conf/applicationContext.xml" );
+		this.appContext = new ClassPathXmlApplicationContext( "applicationContext.xml" );
 	}
 	
 	private void startCamel() throws Exception {

@@ -20,14 +20,28 @@ public class SubscriptionService
 		
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		
-		ResponseEntity<EventSubscriptionCollection> response = 
-			restTemplate.getForEntity( "http://localhost:8080/quoddy/api/eventsubscription/", EventSubscriptionCollection.class, urlVariables );
+		ResponseEntity<EventSubscriptionCollection> response = null;
+		try
+		{
+			response = 
+					restTemplate.getForEntity( "http://localhost:8080/quoddy2/api/eventsubscription/", EventSubscriptionCollection.class, urlVariables );
+		}
+		catch( Exception e )
+		{
+			// TODO: add a proper logger
+			e.printStackTrace();
+			System.out.println( "Exception occurred trying to download subscription list" );
+			System.err.println( "Exception occurred trying to download subscription list" );
+		}
 		
-		EventSubscriptionCollection subscriptionCollection = response.getBody();
+		if( response != null )
+		{
+			EventSubscriptionCollection subscriptionCollection = response.getBody();
 		
-		List<EventSubscription> subscriptionsColl = subscriptionCollection.getSubscriptions();
+			List<EventSubscription> subscriptionsColl = subscriptionCollection.getSubscriptions();
 		
-		subscriptions.addAll( subscriptionsColl );
+			subscriptions.addAll( subscriptionsColl );
+		}
 		
 		return subscriptions;
 	}

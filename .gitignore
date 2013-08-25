@@ -1,2 +1,5 @@
 bin/*
 temp/*
+dist/*
+build/*
+temp

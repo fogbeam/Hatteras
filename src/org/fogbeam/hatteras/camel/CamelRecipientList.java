@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.RecipientList;
+import org.fogbeam.hatteras.subscription.Subscriber;
 
 public class CamelRecipientList
 {
@@ -31,7 +32,7 @@ public class CamelRecipientList
 		}
 		
 		
-		List<String> subscribers = (List<String>)exchange.getProperty("subscribers");
+		List<Subscriber> subscribers = (List<Subscriber>)exchange.getProperty("subscribers");
 		
 		// note: this bit will be more for a load balancing sort of thing...
 		// we'd do something like, for example, send a JMS message to some subset of
@@ -48,15 +49,23 @@ public class CamelRecipientList
 		
 		try
 		{
-			StringBuilder builder = new StringBuilder();
-			for( String subscriber : subscribers )
+			StringBuilder subscriberIds = new StringBuilder();
+			StringBuilder subscribersWithSubId = new StringBuilder();
+			for( Subscriber subscriber : subscribers )
 			{
-				builder.append( subscriber + " " );
+				subscriberIds.append( subscriber + " " );
+				subscribersWithSubId.append( subscriber.getSubscriberUuid() 
+											+ ";" 
+											+ subscriber.getSubscriptionUuid() + " " );
 			}
 		
-			String strSubHeader = builder.toString().trim();		
+			String strSubHeader = subscriberIds.toString().trim();
+			String strSubscribersWithSubId = subscribersWithSubId.toString().trim();
 			exchange.getIn().setHeader( "subscribers", strSubHeader );
-
+			exchange.getIn().setHeader( "subscribersWithSubId", strSubscribersWithSubId );
+			// TODO: ???
+			
+			
 			String xmlUuid = exchange.getProperty( "xmlUuid" ).toString();
 			System.out.println( "got xmlUuid as \"" + xmlUuid + "\" from Exchange property");
 			exchange.getIn().setHeader( "eventUuid", xmlUuid );
