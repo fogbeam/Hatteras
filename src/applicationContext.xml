@@ -39,6 +39,7 @@
 		
 	<beans:bean id="subscriptionService" class="org.fogbeam.hatteras.subscription.SubscriptionService" >
 		<beans:property name="restTemplate" ref="restTemplate" />
+		<beans:property name="quoddyUrl" value="http://localhost:8180/quoddy/api/eventsubscription/" />
 	
 	</beans:bean>
 	

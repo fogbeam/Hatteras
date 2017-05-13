@@ -91,6 +91,11 @@ public class CamelDynamicPredicate implements Predicate
 				result.close();
 			}
 			
+			if( allSubscribers.isEmpty() )
+			{
+				return false;
+			}
+			
 			exchange.setProperty( "subscribers", allSubscribers );
 			exchange.getOut().setHeader("subscribers", allSubscribers );
 			

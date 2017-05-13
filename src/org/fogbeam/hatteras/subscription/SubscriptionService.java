@@ -14,6 +14,8 @@ public class SubscriptionService
 {
 	private RestTemplate restTemplate;
 	
+	private String quoddyUrl = "http://localhost:8080/quoddy/api/eventsubscription/";
+	
 	public List<EventSubscription> getExternalSubscriptions()
 	{
 		List<EventSubscription> subscriptions = new ArrayList<EventSubscription>();
@@ -24,7 +26,7 @@ public class SubscriptionService
 		try
 		{
 			response = 
-					restTemplate.getForEntity( "http://localhost:8080/quoddy2/api/eventsubscription/", EventSubscriptionCollection.class, urlVariables );
+					restTemplate.getForEntity( this.quoddyUrl, EventSubscriptionCollection.class, urlVariables );
 		}
 		catch( Exception e )
 		{
@@ -54,5 +56,15 @@ public class SubscriptionService
 	public RestTemplate getRestTemplate()
 	{
 		return restTemplate;
+	}
+	
+	public void setQuoddyUrl( String quoddyUrl )
+	{
+		this.quoddyUrl = quoddyUrl;
+	}
+	
+	public String getQuoddyUrl()
+	{
+		return quoddyUrl;
 	}
 }

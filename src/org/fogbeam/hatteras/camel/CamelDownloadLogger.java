@@ -10,6 +10,8 @@ public class CamelDownloadLogger implements Processor
 	public void process( Exchange exchange )
 			throws Exception 
 	{
-		System.out.println( "We just downloaded: " + exchange.getIn().getHeader( "CamelFileName" ) );
+	        System.out.println( "Exchange: " + exchange.toString());
+		// System.out.println( "We just downloaded: " + exchange.getIn().getHeader( "CamelFileName" ) );
+		System.out.println( "Body:\n" + exchange.getIn().getBody());
 	}
 }
