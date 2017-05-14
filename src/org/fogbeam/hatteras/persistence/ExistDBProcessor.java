@@ -19,9 +19,12 @@ public class ExistDBProcessor implements Processor
 	@Override
 	public void process( Exchange exchange ) throws Exception
 	{
-		
-		String msgXML = exchange.getIn().getBody( String.class );
-		
+		System.out.println( "existDBProcessor got message: " + exchange.toString());
+
+		String msgXML = exchange.getIn().getBody( String.class );		
+
+		System.out.println( "payload:\n" + msgXML );
+
 		String collection = "/db/hatteras";
 		System.out.println( "Collection: " + collection );
 		

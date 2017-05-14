@@ -55,7 +55,7 @@ public class Main implements Runnable
 		{
 			try
 			{
-				Thread.sleep( 15000 );
+				Thread.sleep( 60000 );
 				
 				// get the list of Subscriptions from the Quoddy server
 				SubscriptionService subService = appContext.getBean( "subscriptionService", SubscriptionService.class );
@@ -72,7 +72,7 @@ public class Main implements Runnable
 			}
 			catch( InterruptedException e )
 			{
-				
+				e.printStackTrace();
 			}
 			
 			System.out.println( "..." );
