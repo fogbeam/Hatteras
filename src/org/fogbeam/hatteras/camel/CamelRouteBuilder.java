@@ -14,11 +14,11 @@ public class CamelRouteBuilder extends RouteBuilder
 	{	
 		
 		from( "jms:queue:foobar" )
-			.process( this.downloadLogger );
-			// .process( this.existDBProcessor )
-			// .choice()
-			// .when( this.subscriptionPredicate )
-			// .bean( CamelRecipientList.class );
+			.process( this.downloadLogger )
+			.process( this.existDBProcessor )
+			.choice()
+			.when( this.subscriptionPredicate )
+			.bean( CamelRecipientList.class );
 	}	
 
 	public void setDownloadLogger( Processor downloadLogger )
